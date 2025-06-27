@@ -31,54 +31,54 @@ A mini SQL-based project that simulates a retail company's customer orders, prod
 -- 1. Customers Table
 DROP TABLE IF EXISTS Customers
 CREATE TABLE Customers (
-						CustomerID INT PRIMARY KEY,
-						 Name VARCHAR(100),
-						Email VARCHAR(100),
-						Phone VARCHAR(15),
-						City VARCHAR(50)
-						);
+	CustomerID INT PRIMARY KEY,
+	 Name VARCHAR(100),
+	Email VARCHAR(100),
+	Phone VARCHAR(15),
+	City VARCHAR(50)
+	);
 
 -- 2. Employees Table
 DROP TABLE IF EXISTS Employees 
 CREATE TABLE Employees (
-						EmployeeID INT PRIMARY KEY,
-						Name VARCHAR(100),
-						Position VARCHAR(50),
-						Department VARCHAR(50)
-						);
+	EmployeeID INT PRIMARY KEY,
+	Name VARCHAR(100),
+	Position VARCHAR(50),
+	Department VARCHAR(50)
+	);
 
 -- 3. Products Table
 DROP TABLE IF EXISTS Products
 CREATE TABLE Products (
-						ProductID INT PRIMARY KEY,
-						Name VARCHAR(100),
-						Category VARCHAR(50),
-						Price DECIMAL(10, 2),
-						Stock INT
-						);
+	ProductID INT PRIMARY KEY,
+	Name VARCHAR(100),
+	Category VARCHAR(50),
+	Price DECIMAL(10, 2),
+	Stock INT
+	);
 
 -- 4. Orders Table
 DROP TABLE IF EXISTS Orders 
 CREATE TABLE Orders (
-						OrderID INT PRIMARY KEY,
-						CustomerID INT,
-						EmployeeID INT,
-						OrderDate DATE,
-						FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-						FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
-					);
+	OrderID INT PRIMARY KEY,
+	CustomerID INT,
+	EmployeeID INT,
+	OrderDate DATE,
+	FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
 
 -- 5. OrderDetails Table
 DROP TABLE IF EXISTS OrderDetails
 CREATE TABLE OrderDetails (
-							OrderDetailID INT PRIMARY KEY,
-							OrderID INT,
-							ProductID INT,
-							Quantity INT,
-							Discount DECIMAL(4, 2),
-							FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-							FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-						);
+	OrderDetailID INT PRIMARY KEY,
+	OrderID INT,
+	ProductID INT,
+	Quantity INT,
+	Discount DECIMAL(4, 2),
+	FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+	FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
 
 
 ```
@@ -105,8 +105,7 @@ SELECT * FROM OrderDetails;
 --Top 5 Customers by Total Purchase Amount**
 
 ```sql
-SELECT TOP 5 C.Name, 
-       SUM(OD.Quantity * P.Price * (1 - OD.Discount)) AS TotalSpent
+SELECT TOP 5 C.Name, SUM(OD.Quantity * P.Price * (1 - OD.Discount)) AS TotalSpent
 FROM OrderDetails OD
 JOIN Orders O ON OD.OrderID = O.OrderID
 JOIN Customers C ON O.CustomerID = C.CustomerID
